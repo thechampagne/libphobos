@@ -2,7 +2,7 @@ BUILD := build
 DD := dmd
 STATIC := -lib
 SHARED := -shared -defaultlib=libphobos2.so
-LIBS := $(BUILD)/uri.o
+LIBS := $(BUILD)/uri.o $(BUILD)/remainder.o
 
 
 .PHONY: all
@@ -12,6 +12,9 @@ all: $(LIBS)
 	$(DD) $(STATIC) $(LIBS) -oflib/libphobos.a
 
 $(BUILD)/uri.o: uri/uri.d
+	$(DD) -c -od$(BUILD) $<
+
+$(BUILD)/remainder.o: math/remainder.d
 	$(DD) -c -od$(BUILD) $<
 
 clean:
