@@ -43,7 +43,7 @@ extern "C" {
  * @param name the mangled name
  * @return A string. If it is not a D mangled name, it returns its argument name.
  */
-extern char* demangle(char* name);
+extern char* demangle(const char* name);
 
 #ifdef __cplusplus
 }

@@ -42,10 +42,14 @@ import core.stdc.string;
  * @param name the mangled name
  * @return A string. If it is not a D mangled name, it returns its argument name.
  */
-extern (C) char* demangle(char* name)
+extern (C) char* demangle(const char* name)
 {
-	char* buf = cast(char*) malloc((strlen(name) + 1) * char.sizeof);
-	auto re = std.demangle.demangle(to!string(name)).toStringz;
-	strcpy(buf, re);
+	auto re = std.demangle.demangle(to!string(name));
+	char* buf = cast(char*) malloc((re.length + 1) * char.sizeof);
+	if (buf == null)
+	{
+		return null;
+	}
+	strcpy(buf, re.toStringz);
 	return buf;
 }

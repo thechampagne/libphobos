@@ -56,7 +56,7 @@ typedef struct {
  * @param encoded_uri
  * @return pointer to uri_t
  */
-extern uri_t* uri_decode(char* encoded_uri);
+extern uri_t* uri_decode(const char* encoded_uri);
 
 /**
  * Decodes the URI string encodedURI into a UTF-8 string and returns it.
@@ -82,7 +82,7 @@ extern uri_t* uri_decode(char* encoded_uri);
  * @param encoded_uri_component
  * @return pointer to uri_t
  */
-extern uri_t* uri_decode_component(char* encoded_uri_component);
+extern uri_t* uri_decode_component(const char* encoded_uri_component);
 
 /**
  * Encodes the UTF-8 string uri into a URI and returns that URI.
@@ -109,7 +109,7 @@ extern uri_t* uri_decode_component(char* encoded_uri_component);
  * @param uri
  * @return pointer to uri_t
  */
-extern uri_t* uri_encode(char* uri);
+extern uri_t* uri_encode(const char* uri);
 
 /**
  * Encodes the UTF-8 string uriComponent into a URI and returns that URI.
@@ -135,7 +135,7 @@ extern uri_t* uri_encode(char* uri);
  * @param uri_component
  * @return pointer to uri_t
  */
-extern uri_t* uri_encode_component(char* uri_component);
+extern uri_t* uri_encode_component(const char* uri_component);
 
 /**
  * Does string s start with a URL?
@@ -152,7 +152,7 @@ extern uri_t* uri_encode_component(char* uri_component);
  * @param s
  * @return -1 it does not len it does, and s[0 .. len] is the slice of s that is that URL
  */
-extern long long uri_length(char* s);
+extern long long uri_length(const char* s);
 
 /**
  * Does string s start with an email address?
@@ -169,7 +169,7 @@ extern long long uri_length(char* s);
  * @param s
  * @return -1 it does not len it does, and s[0 .. i] is the slice of s that is that email address
  */
-extern long long uri_email_length(char* s);
+extern long long uri_email_length(const char* s);
 
 /**
  * function to free the memory of uri_t

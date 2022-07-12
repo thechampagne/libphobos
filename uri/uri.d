@@ -54,23 +54,23 @@ struct uri_t {
  * @param encoded_uri
  * @return pointer to uri_t
  */
-extern (C) uri_t* uri_decode(char* encoded_uri)
+extern (C) uri_t* uri_decode(const char* encoded_uri)
 {
     uri_t* self = cast(uri_t*) malloc(uri_t.sizeof);
     if (self == null)
     {
         return null;
     }
-    char* buf = cast(char*) malloc(char.sizeof * strlen(encoded_uri) + 1);
-    if (buf == null)
-    {
-        free(self);
-        return null;
-    }
     try
     {
-        auto re = std.uri.decode(encoded_uri.fromStringz).toStringz;
-        strcpy(buf, re);
+        auto re = std.uri.decode(encoded_uri.fromStringz);
+        char* buf = cast(char*) malloc(char.sizeof * re.length + 1);
+        if (buf == null)
+        {
+            free(self);
+            return null;
+        }
+        strcpy(buf, re.toStringz);
         self.buffer = buf;
         self.error = null;
         return self;
@@ -80,11 +80,10 @@ extern (C) uri_t* uri_decode(char* encoded_uri)
         char* err = cast(char*) malloc(char.sizeof * ex.msg.length + 1);
         if (err == null)
         {
-            free(buf);
             free(self);
             return null;
         }
-        strcpy(buf, ex.msg.toStringz);
+        strcpy(err, ex.msg.toStringz);
         self.buffer = null;
         self.error = err;
         return self;
@@ -115,23 +114,23 @@ extern (C) uri_t* uri_decode(char* encoded_uri)
  * @param encoded_uri_component
  * @return pointer to uri_t
  */
-extern (C) uri_t* uri_decode_component(char* encoded_uri_component)
+extern (C) uri_t* uri_decode_component(const char* encoded_uri_component)
 {
     uri_t* self = cast(uri_t*) malloc(uri_t.sizeof);
     if (self == null)
     {
         return null;
     }
-    char* buf = cast(char*) malloc(char.sizeof * strlen(encoded_uri_component) + 1);
-    if (buf == null)
-    {
-        free(self);
-        return null;
-    }
     try
     {
-        auto re = std.uri.decodeComponent(encoded_uri_component.fromStringz).toStringz;
-        strcpy(buf, re);
+        auto re = std.uri.decodeComponent(encoded_uri_component.fromStringz);
+        char* buf = cast(char*) malloc(char.sizeof * re.length + 1);
+        if (buf == null)
+        {
+            free(self);
+            return null;
+        }
+        strcpy(buf, re.toStringz);
         self.buffer = buf;
         self.error = null;
         return self;
@@ -141,11 +140,10 @@ extern (C) uri_t* uri_decode_component(char* encoded_uri_component)
         char* err = cast(char*) malloc(char.sizeof * ex.msg.length + 1);
         if (err == null)
         {
-            free(buf);
             free(self);
             return null;
         }
-        strcpy(buf, ex.msg.toStringz);
+        strcpy(err, ex.msg.toStringz);
         self.buffer = null;
         self.error = err;
         return self;
@@ -177,23 +175,23 @@ extern (C) uri_t* uri_decode_component(char* encoded_uri_component)
  * @param uri
  * @return pointer to uri_t
  */
-extern (C) uri_t* uri_encode(char* uri)
+extern (C) uri_t* uri_encode(const char* uri)
 {
     uri_t* self = cast(uri_t*) malloc(uri_t.sizeof);
     if (self == null)
     {
         return null;
     }
-    char* buf = cast(char*) malloc(char.sizeof * strlen(uri) + 1);
-    if (buf == null)
-    {
-        free(self);
-        return null;
-    }
     try
     {
-        auto re = std.uri.encode(uri.fromStringz).toStringz;
-        strcpy(buf, re);
+        auto re = std.uri.encode(uri.fromStringz);
+        char* buf = cast(char*) malloc(char.sizeof * re.length + 1);
+        if (buf == null)
+        {
+            free(self);
+            return null;
+        }
+        strcpy(buf, re.toStringz);
         self.buffer = buf;
         self.error = null;
         return self;
@@ -203,11 +201,10 @@ extern (C) uri_t* uri_encode(char* uri)
         char* err = cast(char*) malloc(char.sizeof * ex.msg.length + 1);
         if (err == null)
         {
-            free(buf);
             free(self);
             return null;
         }
-        strcpy(buf, ex.msg.toStringz);
+        strcpy(err, ex.msg.toStringz);
         self.buffer = null;
         self.error = err;
         return self;
@@ -238,23 +235,23 @@ extern (C) uri_t* uri_encode(char* uri)
  * @param uri_component
  * @return pointer to uri_t
  */
-extern (C) uri_t* uri_encode_component(char* uri_component)
+extern (C) uri_t* uri_encode_component(const char* uri_component)
 {
     uri_t* self = cast(uri_t*) malloc(uri_t.sizeof);
     if (self == null)
     {
         return null;
     }
-    char* buf = cast(char*) malloc(char.sizeof * strlen(uri_component) + 1);
-    if (buf == null)
-    {
-        free(self);
-        return null;
-    }
     try
     {
-        auto re = std.uri.encodeComponent(uri_component.fromStringz).toStringz;
-        strcpy(buf, re);
+        auto re = std.uri.encodeComponent(uri_component.fromStringz);
+        char* buf = cast(char*) malloc(char.sizeof * re.length + 1);
+        if (buf == null)
+        {
+            free(self);
+            return null;
+        }
+        strcpy(buf, re.toStringz);
         self.buffer = buf;
         self.error = null;
         return self;
@@ -264,11 +261,10 @@ extern (C) uri_t* uri_encode_component(char* uri_component)
         char* err = cast(char*) malloc(char.sizeof * ex.msg.length + 1);
         if (err == null)
         {
-            free(buf);
             free(self);
             return null;
         }
-        strcpy(buf, ex.msg.toStringz);
+        strcpy(err, ex.msg.toStringz);
         self.buffer = null;
         self.error = err;
         return self;
@@ -290,7 +286,7 @@ extern (C) uri_t* uri_encode_component(char* uri_component)
  * @param s
  * @return -1 it does not len it does, and s[0 .. len] is the slice of s that is that URL
  */
-extern (C) long uri_length(char* s)
+extern (C) long uri_length(const char* s)
 {
     return std.uri.uriLength(s.fromStringz);
 }
@@ -310,7 +306,7 @@ extern (C) long uri_length(char* s)
  * @param s
  * @return -1 it does not len it does, and s[0 .. i] is the slice of s that is that email address
  */
-extern (C) long uri_email_length(char* s)
+extern (C) long uri_email_length(const char* s)
 {
     return std.uri.emailLength(s.fromStringz);
 }
